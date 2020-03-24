@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct graph {
+    int vertex;
+    int matrix[20][20];
+    char label[20];
+    int length;             //length of label[]. Used in find index for efficient search and addvertex for bounds check
+} Graph;
+
+int addvertex(Graph *g, char s) {
+    g->length++;
+    if(g->length > 19 || g->length < 0)
+        return 0;
+    else{
+        g->label[g->length] = s;
+        return 1;
+    }
+}
+
+int find_index(char s, Graph* g) {
+    int i = 0;
+    while(i <= g->length) {
+        if(g->label[i] == s)
+            return i;
+        else
+            i++;
+    }
+    return -1;
+}
+
+int addedge(char src, char des, Graph* g) {
+    int s,d;
+    s = find_index(src,g);
+    d = find_index(des,g);
+    if(s == -1 || d == -1) {
+        if(s == -1) {
+            printf("Source not found\n");
+            return 0;
+        }
+        if(d == -1) {
+            printf("Destination not found\n");
+            return 0;
+        }
+    }
+    g->matrix[s][d] = 1;
+    return 1;
+}
+/*
+void init (Graph *g) {
+    g->vertex = 0;
+    g->length = -1;
+    int i, j;
+    for(i = 0; i < 20; i++)
+        for(j = 0; j < 20; j++)
+            g->matrix[i][j] = 0;
+}
+*/
+int main() {
+    Graph g;
+    char s,d;
+    int stat;
+//    init(g);
+    g.vertex = 0;
+    g.length = -1;
+    int i, j;
+    for(i = 0; i < 20; i++)
+        for(j = 0; j < 20; j++)
+            g.matrix[i][j] = 0;
+    while(1) {
+        int ch;
+        printf("Select a choice\n");
+        printf("1. Add Vertex\n2. Delete vertex\n3. Add Edge\n4. Display\n5. Exit\nEnter a choice : ");
+        scanf("%d",&ch);
+        switch(ch) {
+        case 1 :
+            printf("Enter the Vertex label : ");
+            scanf(" %c",&s);                    //space before %c because buffer mein 1 hi hoga so wohi use hoga
+//            s = getch();
+            stat = addvertex(&g,s);
+            if(stat == 1)
+                printf("Vertex added successfully!\n");
+            else
+                printf("Error! Vertex not added\n");
+            break;
+        case 2 :
+
+            break;
+        case 3 :
+            printf("Enter Source vertex : ");
+            scanf(" %c",&s);
+            printf("Enter Destination vertex : ");
+            scanf(" %c",&d);
+            stat = addedge(s,d,&g);
+            if(stat == 1)
+                printf("Edge added successfully!\n");
+            else
+                printf("Error! Edge not added, Vertex not found\n");
+            break;
+        case 4 :
+            show(&g);
+            break;
+        case 5:
+            exit(0);
+        }
+    }
+    return 0;
+}
