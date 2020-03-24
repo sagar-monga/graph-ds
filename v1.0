@@ -46,16 +46,6 @@ int addedge(char src, char des, Graph* g) {
     g->matrix[s][d] = 1;
     return 1;
 }
-/*
-void init (Graph *g) {
-    g->vertex = 0;
-    g->length = -1;
-    int i, j;
-    for(i = 0; i < 20; i++)
-        for(j = 0; j < 20; j++)
-            g->matrix[i][j] = 0;
-}
-*/
 int show(Graph* g) {
     int i,j;
     for(i = 0; i <= g->length; i++) {
